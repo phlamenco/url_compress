@@ -28,6 +28,8 @@ class TreeCompression {
 
   bool exists(const std::string& url);
 
+  void print_tree();
+
  private:
 
   TreeNode* insert(TreeNode* node,
@@ -37,6 +39,8 @@ class TreeCompression {
 
   TreeNode* find(TreeNode* node, const char* url);
 
+  void _print_tree(TreeNode* node);
+
   std::string get_complete_url(size_t idx);
 
   // A utility function to get the height of the tree
@@ -45,6 +49,21 @@ class TreeCompression {
       return 0;
     return n->height;
   }
+
+  /**
+   * T1, T2 and T3 are subtrees of the tree
+   * rooted with y (on the left side) or x (on
+   * the right side)
+        y                               x
+       / \     Right Rotation          /  \
+      x   T3   - - - - - - - >        T1   y
+     / \       < - - - - - - -            / \
+    T1  T2     Left Rotation            T2  T3
+   * Keys in both of the above trees follow the
+   * following order
+   * keys(T1) < key(x) < keys(T2) < key(y) < keys(T3)
+   * So BST property is not violated anywhere.
+   */
 
   // A utility function to right rotate subtree rooted with y
   TreeNode* right_rotate(TreeNode* y);

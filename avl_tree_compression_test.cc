@@ -15,6 +15,10 @@ class TreeCompressionTest : public ::testing::Test {
     compressor.add("http://www.baidu.com");
     compressor.add("http://www.qq.com");
     compressor.add("http://www.qq.com/hubei");
+    compressor.add("http://www.hao123.com");
+    compressor.add("http://www.alibaba.com");
+    compressor.add("http://www.google.com");
+    compressor.add("http://www.facebook.com");
   }
 };
 

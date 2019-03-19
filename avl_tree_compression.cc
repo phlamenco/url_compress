@@ -2,6 +2,7 @@
 // Date: 2019/03/18
 
 #include <cstdlib>
+#include <iostream>
 #include "avl_tree_compression.h"
 #include "utility.h"
 
@@ -29,6 +30,14 @@ bool TreeCompression::add(const std::string& url) {
 
 bool TreeCompression::exists(const std::string& url) {
   return find(root_, url.c_str()) != nullptr;
+}
+
+void TreeCompression::print_tree() {
+  _print_tree(root_);
+}
+
+void TreeCompression::_print_tree(TreeNode* node) {
+  // TODO
 }
 
 TreeNode* TreeCompression::find(TreeNode* node, const char* url) {
@@ -93,9 +102,9 @@ TreeNode* TreeCompression::insert(TreeNode* node,
     } else if (balance < -1) {
       std::string right_complete_url = get_complete_url(node->right->index);
       int cmp = std::strcmp(right_complete_url.c_str(), url);
-      if (cmp > 0) {
+      if (cmp < 0) {
         return left_rotate(node);
-      } else if (cmp < 0) {
+      } else if (cmp > 0) {
         node->right = right_rotate(node->right);
         return left_rotate(node);
       }
