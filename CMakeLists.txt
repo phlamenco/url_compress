@@ -10,8 +10,23 @@ include_directories(
 add_subdirectory(thirdparty/googletest)
 
 add_library(url_compress
-    avl_tree.h
-    avl_tree.cc
-    compressed_url_array.cc
-    compressed_url_array.h
+    avl_tree_compression.h
+    avl_tree_compression.cc
+    url_block.cc
+    url_block.h
     utility.h)
+
+add_executable(url_block_test
+    url_block_test.cc)
+
+target_link_libraries(url_block_test
+    url_compress
+    gtest
+    gtest_main)
+
+add_executable(avl_tree_compression_test
+    avl_tree_compression_test.cc)
+target_link_libraries(avl_tree_compression_test
+    url_compress
+    gtest
+    gtest_main)
