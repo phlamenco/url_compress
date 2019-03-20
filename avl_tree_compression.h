@@ -8,14 +8,15 @@
 #include <vector>
 #include <memory>
 #include "url_block.h"
+#include "node_array.h"
 
 namespace url_compression {
 
 struct TreeNode {
-  size_t index;
-  int height;
-  TreeNode* left;
-  TreeNode* right;
+  size_t index;  // ptr_vec's index, start from 1 and increment by 1 when add new node
+  uint8_t height;  // tree height, leaf node height is 1
+  TreeNode* left;  // left child tree
+  TreeNode* right;  // right child tree
 };
 
 class TreeCompression {
@@ -28,7 +29,9 @@ class TreeCompression {
 
   bool exists(const std::string& url);
 
-  void print_tree();
+  std::shared_ptr<NodeArray> dump_tree();
+
+  uint32_t count() const;
 
  private:
 
@@ -39,12 +42,14 @@ class TreeCompression {
 
   TreeNode* find(TreeNode* node, const char* url);
 
-  void _print_tree(TreeNode* node);
+  uint32_t node_count(TreeNode*) const;
+
+  void dump_tree_impl(TreeNode* node, NodeArray* nodes);
 
   std::string get_complete_url(size_t idx);
 
   // A utility function to get the height of the tree
-  int height(TreeNode* n) {
+  uint8_t height(TreeNode* n) {
     if (n == nullptr)
       return 0;
     return n->height;
@@ -79,6 +84,8 @@ class TreeCompression {
   }
 
   void free_tree(TreeNode* node);
+
+  friend class UrlRetrieveTest;
 
   TreeNode* root_ = nullptr;
   std::unique_ptr<UrlBlock> block_;

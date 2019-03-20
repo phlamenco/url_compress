@@ -32,12 +32,40 @@ bool TreeCompression::exists(const std::string& url) {
   return find(root_, url.c_str()) != nullptr;
 }
 
-void TreeCompression::print_tree() {
-  _print_tree(root_);
+uint32_t TreeCompression::count() const {
+  return node_count(root_);
 }
 
-void TreeCompression::_print_tree(TreeNode* node) {
-  // TODO
+std::shared_ptr<NodeArray> TreeCompression::dump_tree() {
+  auto node_array = std::make_shared<NodeArray>();
+  node_array->alloc(node_count(root_));
+  dump_tree_impl(root_, node_array.get());
+  node_array->set_root_index(root_->index);
+  return node_array;
+}
+
+void TreeCompression::dump_tree_impl(TreeNode* node, NodeArray* nodes) {
+  if (node == nullptr)
+    return;
+  uint32_t left_id = 0;
+  uint32_t right_id = 0;
+  uint8_t height = 0;
+  if (node->left != nullptr) {
+    left_id = node->left->index;
+  }
+  if (node->right != nullptr) {
+    right_id = node->right->index;
+  }
+  height = node->height;
+  nodes->insert(node->index, left_id, right_id, height);
+  dump_tree_impl(node->left, nodes);
+  dump_tree_impl(node->right, nodes);
+}
+
+uint32_t TreeCompression::node_count(TreeNode* node) const {
+  if (node == nullptr)
+    return 0;
+  return node_count(node->left) + node_count(node->right) + 1;
 }
 
 TreeNode* TreeCompression::find(TreeNode* node, const char* url) {

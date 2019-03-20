@@ -24,6 +24,11 @@ class TreeCompressionTest : public ::testing::Test {
 
 TEST_F(TreeCompressionTest, Exist) {
   EXPECT_TRUE(compressor.exists("http://www.qq.com"));
+  EXPECT_FALSE(compressor.exists("http://www.hao.com"));
+}
+
+TEST_F(TreeCompressionTest, Count) {
+  EXPECT_EQ(7, compressor.count());
 }
 
 }
